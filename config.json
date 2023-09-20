@@ -8,5 +8,23 @@
     "password": "",
     "redirect_uri": "https://miapp.com/redirect",
     "scopes": ["read"] 
-  }
+  },
+  "search_keywords":[
+    {
+      "operator":"claro",
+      "keywords": ["claro", "operadora", "opinión", "experiencia"]
+    },
+    {
+      "operator":"entel",
+      "keywords": ["entel"]
+    },
+    {
+      "operator":"movistar",
+      "keywords": ["movistar"]
+    },
+    {
+      "operator":"bitel",
+      "keywords": ["bitel"]
+    }
+  ]
 }
