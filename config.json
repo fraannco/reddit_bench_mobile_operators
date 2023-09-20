@@ -4,8 +4,8 @@
     "client_id": "lxaWyJgzA1-W1S67Xf7iBQ",
     "client_secret": "d_doIRE8KKuw_YGv2sMKRlkLqA5FWA",
     "user_agent": "benchmarking_mobile_operators", 
-    "username": "bambamcila",
-    "password": "Tesis202309-*",
+    "username": "",
+    "password": "",
     "redirect_uri": "https://miapp.com/redirect",
     "scopes": ["read"] 
   }
