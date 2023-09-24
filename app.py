@@ -7,7 +7,6 @@ def main():
   
   # Guardando nombre de la operadora
   mobile_operator=sys.argv[1]
-  fecha=sys.argv[2]
 
   # Cargando el archivo de configuraciones
   with open('config.json', 'r') as archivo:
@@ -24,11 +23,8 @@ def main():
     proyect_data["reddit_api"]["password"]
   )
 
-  v_fecha_inicio = datetime.datetime.strptime(fecha, "%Y%m%d")
-  v_fecha_fin = datetime.datetime.strptime(fecha, "%Y%m%d") + datetime.timedelta(days=1)
-
   # Probando la extraccion de data del operadora
-  v_reddit.get_all_post_by_mobile_operator(search_keyworks)
+  v_posts = v_reddit.get_all_post_by_mobile_operator(search_keyworks)
 
 if __name__ == "__main__":
   main()
