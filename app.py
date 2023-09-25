@@ -7,8 +7,12 @@ from database.postgres import PostgreSQL
 
 def main():
   try:
+    # Fecha inicio
+    fecha_inicio = datetime.datetime.now()
+
     # Guardando nombre de la operadora
     mobile_operator=sys.argv[1]
+    granularity="year"
 
     # Cargando el archivo de configuraciones
     with open('config.json', 'r') as archivo:
@@ -49,18 +53,32 @@ def main():
     '''
 
     # Realizando la extraccion de posts asociados a la operadora
-    v_posts = v_reddit.get_all_post_by_mobile_operator(search_keyworks,mobile_operator)
+    v_posts = v_reddit.get_all_post_by_mobile_operator(search_keyworks,mobile_operator,granularity)
+    if len(v_posts) > 0:
+      # Eliminando tabla de paso
+      database.execute_query(QUERY_DELETE)
 
-    # Eliminando tabla de paso
-    database.execute_query(QUERY_DELETE)
+      # Insertando informacion a la base de datos
+      database.insert_array(v_posts,QUERY_INSERT)
 
-    # Insertando informacion a la base de datos
-    database.insert_array(v_posts,QUERY_INSERT)
+      # Ejecutando SP de carga de tabla fuente
+      database.execute_store_procedure("sp_reddit_mo_bench_load_posts",[mobile_operator])
 
-    # Finalizando la conexion a postgres
-    database.connection.close()
+      # Finalizando la conexion a postgres
+      database.connection.close()
+
+      # Fecha fin
+      fecha_fin = datetime.datetime.now()
+
+      print(f'Se finalizo la carga correctamente | [Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
+    else:
+      print(f'No se encontraron datos | [Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
   except Exception as e:
+    # Fecha fin
+    fecha_fin = datetime.datetime.now()
+
     print(f'Problemas en Benchmarking Mobile Operators {e}')
+    print(f'[Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
 
 if __name__ == "__main__":
   main()
