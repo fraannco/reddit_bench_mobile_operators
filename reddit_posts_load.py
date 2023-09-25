@@ -12,7 +12,7 @@ def main():
 
     # Guardando nombre de la operadora
     mobile_operator=sys.argv[1]
-    granularity="year"
+    granularity=sys.argv[2]
 
     # Cargando el archivo de configuraciones
     with open('config.json', 'r') as archivo:
@@ -70,7 +70,7 @@ def main():
       # Fecha fin
       fecha_fin = datetime.datetime.now()
 
-      print(f'Se finalizo la carga correctamente | [Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
+      print(f'Se finalizo la carga de posts correctamente | [Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
     else:
       # Fecha fin
       fecha_fin = datetime.datetime.now()
