@@ -72,6 +72,8 @@ def main():
 
       print(f'Se finalizo la carga correctamente | [Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
     else:
+      # Fecha fin
+      fecha_fin = datetime.datetime.now()
       print(f'No se encontraron datos | [Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
   except Exception as e:
     # Fecha fin
