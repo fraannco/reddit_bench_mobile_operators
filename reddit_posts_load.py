@@ -41,10 +41,54 @@ def main():
     )
 
     QUERY_INSERT = '''
-      INSERT INTO TP_REDDIT_PERU_POST_MOBILE_OPERATORS VALUES(
-        %s, %s, %s, %s, TO_TIMESTAMP(%s,'YYYY-MM-DD HH24:MI:SS'),
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s
+      INSERT INTO TP_REDDIT_PERU_POST_MOBILE_OPERATORS(
+        operadora,
+        post_id,
+        author,
+        title,
+        created_utc,
+        distinguished,
+        edited,
+        is_original_content,
+        is_self,
+        link_flair_text,
+        locked,
+        name,
+        num_comments,
+        over_18,
+        permalink,
+        saved,
+        score,
+        selftext,
+        spoiler,
+        stickied,
+        subreddit,
+        upvote_ratio,
+        url
+      ) VALUES(
+        %s,
+        %s,
+        %s,
+        %s,
+        TO_TIMESTAMP(%s,'YYYY-MM-DD HH24:MI:SS'),
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s,
+        %s
       )
     '''
     QUERY_DELETE = f'''

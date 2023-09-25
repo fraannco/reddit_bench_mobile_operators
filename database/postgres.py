@@ -27,7 +27,6 @@ class PostgreSQL:
           C = []
 
       # Cargando lo faltante
-      print(len(C))
       self.cursor.executemany(p_query, C)
       v_registros_insertados=v_registros_insertados + self.cursor.rowcount
       self.connection.commit()

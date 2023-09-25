@@ -38,7 +38,6 @@ class Reddit:
             collection.edited,
             collection.is_original_content,
             collection.is_self,
-            collection.link_flair_template_id,
             collection.link_flair_text,
             collection.locked,
             collection.name,

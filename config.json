@@ -32,6 +32,10 @@
     {
       "operator":"bitel",
       "keywords": ["bitel"]
+    },
+    {
+      "operator":"telefonica",
+      "keywords": ["telefonica"]
     }
   ]
 }
