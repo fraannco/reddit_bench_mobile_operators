@@ -9,6 +9,13 @@
     "redirect_uri": "https://miapp.com/redirect",
     "scopes": ["read"] 
   },
+  "postgres": {
+    "database": "reddit_bench_mobile_operators",
+    "user": "postgres",
+    "password": "root", 
+    "host": "localhost",
+    "port": "5432"
+  },
   "search_keywords":[
     {
       "operator":"claro",
