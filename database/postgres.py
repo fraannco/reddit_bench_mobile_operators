@@ -9,7 +9,6 @@ class PostgreSQL:
       host=p_host,
       port=p_port
     )
-
     self.cursor = self.connection.cursor()
 
   def insert_array(self,p_data,p_query):
@@ -46,3 +45,12 @@ class PostgreSQL:
       print(f'Se ejecuto: {p_query}\ncorrectamente.')
     except Exception as e:
       raise Exception(f'PostgreSQL.execute_query: {e}')
+    
+  def execute_store_procedure (self,p_store_procedure,p_params):
+    try:
+      self.connection.autocommit = True
+      self.cursor.execute(f'CALL {p_store_procedure}(%s)',p_params)
+      self.connection.autocommit = False
+      print(f'Se ejecuto: {p_store_procedure}\ncorrectamente.')
+    except Exception as e:
+      raise Exception(f'PostgreSQL.execute_store_procedure: {e}')
