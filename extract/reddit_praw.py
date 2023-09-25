@@ -13,7 +13,7 @@ class Reddit:
     )
     self.reddit.read_only = True
 
-  def get_all_post_by_mobile_operator(self,p_search_keyworks,p_operator):
+  def get_all_post_by_mobile_operator(self,p_search_keyworks,p_operator,p_granularity):
     try:
       # Definiando cabeceras a extraer:
       headers = [
@@ -23,7 +23,7 @@ class Reddit:
       ]
       #claro operadora experiencia opinion
       v_query,v_data = ' '.join(p_search_keyworks),[]
-      v_subreddit = self.reddit.subreddit("PERU").search(query=v_query, limit=None,time_filter="year",sort="relevance")
+      v_subreddit = self.reddit.subreddit("PERU").search(query=v_query, limit=None,time_filter=p_granularity,sort="relevance")
 
       print(f'Se buscara: {v_query}')
       for collection in v_subreddit:
