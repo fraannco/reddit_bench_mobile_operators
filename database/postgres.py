@@ -11,9 +11,9 @@ class PostgreSQL:
     )
     self.cursor = self.connection.cursor()
 
-  def insert_array(self,p_data,p_query):
+  def insert_array(self,p_data,p_query,p_bulk):
     try:
-      v_bulk_count,v_cant_registros,v_registros_insertados = 10,0,0
+      v_bulk_count,v_cant_registros,v_registros_insertados = p_bulk,0,0
       C = []
       for data in p_data:
         C.append(data)
@@ -52,3 +52,11 @@ class PostgreSQL:
       print(f'Se ejecuto: {p_store_procedure}\ncorrectamente.')
     except Exception as e:
       raise Exception(f'PostgreSQL.execute_store_procedure: {e}')
+    
+  def get_query_results (self,p_query):
+    try:
+      self.cursor.execute(p_query)
+      v_results = self.cursor.fetchall()
+      return v_results
+    except Exception as e:
+      raise Exception(f'PostgreSQL.execute_query: {e}')

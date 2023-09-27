@@ -57,6 +57,44 @@ class Reddit:
       return v_data
     except Exception as e:
       raise Exception(f'Reddit.get_all_post_by_mobile_operator: {e}')
+    
+  def get_all_comments_of_post(self,v_posts):
+    try:
+      C=[]
+      for tp_post in v_posts:
+        v_submission = self.reddit.submission(tp_post[0])
+        v_submission.comments.replace_more(limit=None)
+        for comment in v_submission.comments.list():
+          try:
+            C.append(
+              [
+                tp_post[0],
+                comment.id,
+                comment.author.name,
+                comment.body,
+                datetime.datetime.utcfromtimestamp( comment.created_utc).strftime('%Y-%m-%d %H:%M:%S'),
+                comment.edited,
+                comment.score,
+                comment.subreddit_id
+              ]
+            )
+          except AttributeError as e:
+            C.append(
+              [
+                tp_post[0],
+                comment.id,
+                '',
+                comment.body,
+                datetime.datetime.utcfromtimestamp( comment.created_utc).strftime('%Y-%m-%d %H:%M:%S'),
+                comment.edited,
+                comment.score,
+                comment.subreddit_id
+              ]
+            )
+        print(f'Se extrajeron los datos de {tp_post[0]} correctamente')
+      return C
+    except Exception as e:
+      raise Exception(f'Reddit.get_all_post_by_mobile_operator: {e}')
 
 
 

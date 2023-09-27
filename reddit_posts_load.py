@@ -103,7 +103,7 @@ def main():
       database.execute_query(QUERY_DELETE)
 
       # Insertando informacion a la base de datos
-      database.insert_array(v_posts,QUERY_INSERT)
+      database.insert_array(v_posts,QUERY_INSERT,10)
 
       # Ejecutando SP de carga de tabla fuente
       database.execute_store_procedure("sp_reddit_mo_bench_load_posts",[mobile_operator])
