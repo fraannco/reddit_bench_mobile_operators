@@ -1,6 +1,5 @@
 import praw
 import datetime
-import pandas as pd
 
 class Reddit:
   def __init__(self,p_client_id,p_client_secret,p_user_agent,p_username,p_password):
