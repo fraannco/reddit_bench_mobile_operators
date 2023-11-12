@@ -32,9 +32,16 @@ def main():
       proyect_data["postgres"]["port"]
     )
 
-    QUERY_GET_POSTS = '''SELECT DISTINCT post_id FROM REDDIT_BMO_SQ_POSTS'''
+    QUERY_GET_POSTS = '''
+      SELECT DISTINCT post_id
+      FROM REDDIT_BMO_SQ_POSTS a
+      WHERE a.post_id NOT IN (
+        SELECT DISTINCT cmmts.post_id
+        FROM reddit_bmo_sq_comments cmmts
+      )
+  '''
     QUERY_INSERT = '''
-      INSERT INTO REDDIT_BMO_SQ_COMMENTS(
+      INSERT INTO reddit_bmo_sq_comments(
         post_id,
         comment_id,
         author,

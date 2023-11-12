@@ -85,7 +85,7 @@ def main():
     print(v_df.head())
 
     # Assuming `df` is your DataFrame
-    v_df.to_csv('files/filename.csv', index=False)
+    v_df.to_csv('files/reddit_peru_mobile_operators_opinions.csv', index=False)
 
 
     # Fecha fin
