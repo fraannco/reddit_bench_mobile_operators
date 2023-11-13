@@ -70,12 +70,14 @@ def main():
     # Aplicar la limpieza a las columnas 'post_title', 'selftext' y 'comment'
     v_df['post_title'] = v_df['post_title'].apply(transform.preprocess_text)
     v_df['selftext'] = v_df['selftext'].apply(transform.preprocess_text)
+    v_df['link_flair_text'] = v_df['link_flair_text'].apply(transform.preprocess_text)
     print(v_df.head())
 
     # Aplicar la normalización a las columnas 'post_title', 'selftext' y 'comment'
     v_df['post_title'] = v_df['post_title'].apply(transform.normalize_text)
     v_df['selftext'] = v_df['selftext'].apply(transform.normalize_text)
     v_df['comment'] = v_df['comment'].apply(transform.normalize_text)
+    v_df['link_flair_text'] = v_df['link_flair_text'].apply(transform.normalize_text)
 
     print(v_df.head())
 
@@ -92,13 +94,17 @@ def main():
     # Dividiendo las filas por menciones de operadora
     expanded_df = v_df.assign(menciones_operadoras=v_df['menciones_operadoras'].str.split(', ')).explode('menciones_operadoras')
 
-    v_df = v_df.drop(columns=["operadora_busqueda"])
-    v_df = v_df.rename(columns={"menciones_operadoras": "operadora"})
-
     # Assuming `df` is your DataFrame
-    expanded_df.to_csv('files/reddit_mobile_operators_peru_opinions.csv', index=False)
+    
+    expanded_df = expanded_df.drop(columns=["operadora_busqueda"])
 
+    expanded_df = expanded_df.rename(columns={"menciones_operadoras": "operadora"})
+    expanded_df['operadora'] = expanded_df['operadora'].replace('telefonica', 'movistar')
+    print(expanded_df.describe())
+    
+    expanded_df['mobile_operator_sentiment'] = expanded_df.apply(lambda row: transform.analyze_sentiment(row['comment'], row['operadora']), axis=1)
 
+    expanded_df.to_csv('files/reddit_mobile_operators_peru_opinions5.csv', index=False)
     # Fecha fin
     fecha_fin = datetime.datetime.now()
     print(f'[Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
