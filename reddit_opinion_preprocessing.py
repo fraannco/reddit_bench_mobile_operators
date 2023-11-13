@@ -12,7 +12,7 @@ def main():
     
     fecha_inicio = datetime.datetime.now()
 
-    operadoras = ["claro", "bitel", "entel", "movistar"]
+    operadoras = ["claro", "bitel", "entel", "movistar","wow","win"]
 
     # Cargando el archivo de configuraciones
     with open('config.json', 'r') as archivo:
@@ -33,10 +33,15 @@ def main():
         a.upvote_ratio,
         REPLACE(b.body, E'\\n', ' ') comment,
         b.score comment_score,
-        b.createc_utc comment_created_utc
+        b.createc_utc comment_created_utc,
+        a.operadora operadora_busqueda
       FROM reddit_bmo_sq_posts a
       INNER JOIN reddit_bmo_sq_comments b
         ON a.post_id = b.post_id
+      WHERE a.post_id  NOT IN (
+        SELECT DISTINCT ep.post_id
+        FROM reddit_mbo_sq_excluded_posts ep
+      )
     '''
     # Instanciando la clase de base de datos
     database = PostgreSQL(
@@ -56,7 +61,7 @@ def main():
         "post_id", "post_author", "comment_id", "comment_author",
         "post_title", "post_created_utc", "link_flair_text", "selftext",
         "subreddit", "upvote_ratio", "comment", "comment_score",
-        "comment_created_utc",
+        "comment_created_utc","operadora_busqueda",
       ]
     )
 
@@ -65,8 +70,6 @@ def main():
     # Aplicar la limpieza a las columnas 'post_title', 'selftext' y 'comment'
     v_df['post_title'] = v_df['post_title'].apply(transform.preprocess_text)
     v_df['selftext'] = v_df['selftext'].apply(transform.preprocess_text)
-    v_df['comment'] = v_df['comment'].apply(transform.preprocess_text)
-
     print(v_df.head())
 
     # Aplicar la normalización a las columnas 'post_title', 'selftext' y 'comment'
@@ -80,12 +83,20 @@ def main():
     v_df["menciones_operadoras"] = v_df.apply(lambda row: transform.contar_mencion_operadora(row["post_title"] + " " + row["selftext"] + " " + row["comment"],), axis=1)
 
     # Puedes convertir la lista de menciones en una cadena separada por comas si lo deseas
-    v_df["menciones_operadoras"] = v_df["menciones_operadoras"].apply(lambda menciones: ', '.join(menciones))
+    #v_df["menciones_operadoras"] = v_df["menciones_operadoras"].apply(lambda menciones: ', '.join(menciones))
 
-    print(v_df.head())
+    v_df["menciones_operadoras"] = v_df["menciones_operadoras"].apply(lambda menciones: ', '.join(menciones) if menciones else None)
+    
+    v_df["menciones_operadoras"].fillna(v_df["operadora_busqueda"], inplace=True)
+
+    # Dividiendo las filas por menciones de operadora
+    expanded_df = v_df.assign(menciones_operadoras=v_df['menciones_operadoras'].str.split(', ')).explode('menciones_operadoras')
+
+    v_df = v_df.drop(columns=["operadora_busqueda"])
+    v_df = v_df.rename(columns={"menciones_operadoras": "operadora"})
 
     # Assuming `df` is your DataFrame
-    v_df.to_csv('files/reddit_peru_mobile_operators_opinions.csv', index=False)
+    expanded_df.to_csv('files/reddit_mobile_operators_peru_opinions.csv', index=False)
 
 
     # Fecha fin

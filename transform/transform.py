@@ -10,7 +10,10 @@ class Transform:
 
   # Crear una función para realizar la limpieza de texto
   def preprocess_text(self,text):
+    try:
       # Convertir a minúsculas
+      if text is None:
+          text = ''
       text = text.lower()
       
       # Tokenización
@@ -23,10 +26,14 @@ class Transform:
       cleaned_text = ' '.join(filtered_tokens)
       
       return cleaned_text
+    except Exception as e:
+      raise Exception (f'Transform.preprocess_text: {e}')
 
   # Crear una función para la normalización de texto
   def normalize_text(self,text):
     # Convierte el texto a minúsculas
+    if text is None:
+        text = ''
     text = text.lower()
     # Elimina acentos y caracteres especiales
     text = unidecode.unidecode(text)

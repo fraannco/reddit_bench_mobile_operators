@@ -96,6 +96,42 @@ class Reddit:
       raise Exception(f'Reddit.get_all_post_by_mobile_operator: {e}')
 
 
+  def get_posts_by_array(self,posts_id,p_operator):
+    try:
+      v_data = []
+      for post in posts_id:
+        v_post = self.reddit.submission(id=post)
+        v_data.append(
+          [
+            p_operator,
+            v_post.id,
+            v_post.author.name,
+            v_post.title,
+            datetime.datetime.utcfromtimestamp( v_post.created_utc).strftime('%Y-%m-%d %H:%M:%S'),
+            v_post.distinguished,
+            v_post.edited,
+            v_post.is_original_content,
+            v_post.is_self,
+            v_post.link_flair_text,
+            v_post.locked,
+            v_post.name,
+            v_post.num_comments,
+            v_post.over_18,
+            v_post.permalink,
+            v_post.saved,
+            v_post.score,
+            v_post.selftext,
+            v_post.spoiler,
+            v_post.stickied,
+            v_post.subreddit.name,
+            v_post.upvote_ratio,
+            v_post.url
+          ]
+        )
+      return v_data
+    except Exception as e:
+      raise Exception(f'Reddit.get_all_post_by_mobile_operator: {e}')
+
 
 
 

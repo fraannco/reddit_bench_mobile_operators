@@ -36,6 +36,14 @@
     {
       "operator":"telefonica",
       "keywords": ["telefonica"]
+    },
+    {
+      "operator":"wow",
+      "keywords": ["wow", "internet"]
+    },
+    {
+      "operator":"win",
+      "keywords": ["win", "internet"]
     }
   ]
 }
