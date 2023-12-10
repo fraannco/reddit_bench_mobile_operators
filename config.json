@@ -44,6 +44,26 @@
     {
       "operator":"win",
       "keywords": ["win", "internet"]
+    },
+    {
+      "operator":"internet",
+      "keywords": ["contratar","servicio", "de", "internet", "fijo"]
+    },
+    {
+      "operator":"prepago",
+      "keywords": ["plan","prepago","mejor"]
+    },
+    {
+      "operator":"postpago",
+      "keywords": ["plan","postpago","mejor"]
+    },
+    {
+      "operator":"osiptel",
+      "keywords": ["osiptel","reclamos"]
+    },
+    {
+      "operator":"fibra",
+      "keywords": ["fibra","optica","calidad"]
     }
   ]
 }

@@ -34,7 +34,12 @@ def main():
         REPLACE(b.body, E'\\n', ' ') comment,
         b.score comment_score,
         b.createc_utc comment_created_utc,
-        a.operadora operadora_busqueda
+        CASE
+          WHEN
+            a.operadora IN ('claro','entel','movistar','win','wow','bitel')
+          THEN a.operadora
+          ELSE 'no_identificado'
+        END operadora_busqueda
       FROM reddit_bmo_sq_posts a
       INNER JOIN reddit_bmo_sq_comments b
         ON a.post_id = b.post_id
@@ -83,9 +88,8 @@ def main():
 
     # Aplicar la función a cada fila
     v_df["menciones_operadoras"] = v_df.apply(lambda row: transform.contar_mencion_operadora(row["post_title"] + " " + row["selftext"] + " " + row["comment"],), axis=1)
-
+    print(v_df["menciones_operadoras"])
     # Puedes convertir la lista de menciones en una cadena separada por comas si lo deseas
-    #v_df["menciones_operadoras"] = v_df["menciones_operadoras"].apply(lambda menciones: ', '.join(menciones))
 
     v_df["menciones_operadoras"] = v_df["menciones_operadoras"].apply(lambda menciones: ', '.join(menciones) if menciones else None)
     
@@ -93,18 +97,14 @@ def main():
 
     # Dividiendo las filas por menciones de operadora
     expanded_df = v_df.assign(menciones_operadoras=v_df['menciones_operadoras'].str.split(', ')).explode('menciones_operadoras')
-
-    # Assuming `df` is your DataFrame
-    
     expanded_df = expanded_df.drop(columns=["operadora_busqueda"])
-
     expanded_df = expanded_df.rename(columns={"menciones_operadoras": "operadora"})
     expanded_df['operadora'] = expanded_df['operadora'].replace('telefonica', 'movistar')
-    print(expanded_df.describe())
     
     expanded_df['mobile_operator_sentiment'] = expanded_df.apply(lambda row: transform.analyze_sentiment(row['comment'], row['operadora']), axis=1)
 
-    expanded_df.to_csv('files/reddit_mobile_operators_peru_opinions5.csv', index=False)
+    expanded_df.to_csv('files/reddit_mobile_operators_peru_opinions9.csv', index=False)
+    
     # Fecha fin
     fecha_fin = datetime.datetime.now()
     print(f'[Fecha inicio]: {fecha_inicio} | [Fecha fin]: {fecha_fin}')
